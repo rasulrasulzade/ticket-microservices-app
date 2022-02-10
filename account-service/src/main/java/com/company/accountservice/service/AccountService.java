@@ -1,17 +1,17 @@
 package com.company.accountservice.service;
 
-import com.company.accountservice.entity.Account;
-
-import java.util.List;
+import com.company.accountservice.dto.AccountDto;
+import com.company.accountservice.model.AccountPageModel;
+import org.springframework.data.domain.Sort;
 
 public interface AccountService {
-     List<Account> getAll();
+     AccountPageModel getAll(Integer page, Integer pageSize, Sort.Direction direction, String sortBy);
 
-     Account get(String id);
+     AccountDto get(String id);
 
-     Account save(Account account);
+     AccountDto save(AccountDto account);
 
-     Account update(String id, Account account);
+     AccountDto update(String id, AccountDto account);
 
      void delete(String id);
 }

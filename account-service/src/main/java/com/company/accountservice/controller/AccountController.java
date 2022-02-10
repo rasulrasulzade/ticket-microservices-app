@@ -1,48 +1,51 @@
 package com.company.accountservice.controller;
 
-import com.company.accountservice.entity.Account;
+import com.company.accountservice.dto.AccountDto;
+import com.company.accountservice.model.AccountPageModel;
 import com.company.accountservice.service.AccountService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
+import java.util.Optional;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/accounts")
 public class AccountController {
     private final AccountService accountService;
 
-    public AccountController(AccountService accountService) {
-        this.accountService = accountService;
-    }
-
     @GetMapping()
-    public List<Account> getAll(){
-        //TODO add pagination
-        return accountService.getAll();
+    public ResponseEntity<AccountPageModel> getAll(@RequestParam Optional<Integer> page, @RequestParam Optional<Integer> pageSize, @RequestParam Optional<String> direction, @RequestParam Optional<String> sortBy) {
+        Sort.Direction order = Sort.Direction.ASC;
+        if (direction.isPresent() && direction.get().equals("desc")) order = Sort.Direction.DESC;
+
+        AccountPageModel pageModel = accountService.getAll(page.orElse(0), pageSize.orElse(10), order, sortBy.orElse("id"));
+        return ResponseEntity.ok(pageModel);
     }
 
     @PostMapping
-    public Account save(@RequestBody Account account){
-        //TODO check account if not valid throw exception
-        return accountService.save(account);
+    public AccountDto save(@Valid @RequestBody AccountDto accountDto) {
+        return accountService.save(accountDto);
     }
 
     @GetMapping("/{id}")
-    public Account getById(@PathVariable String id){
-        //TODO check id if null throw exception
+    public AccountDto getById(@PathVariable String id) {
         return accountService.get(id);
     }
 
     @PutMapping("/{id}")
-    public Account update(@PathVariable String id, @RequestBody Account account){
-        //TODO check id if null throw exception
-        //TODO check account if not valid throw exception
-        return accountService.update(id, account);
+    public AccountDto update(@PathVariable String id, @Valid @RequestBody AccountDto accountDto) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id cannot be null");
+        }
+        return accountService.update(id, accountDto);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable String id){
-        //TODO check id if null throw exception
+    public void delete(@PathVariable String id) {
         accountService.delete(id);
     }
 
