@@ -4,7 +4,6 @@ import com.company.accountservice.dto.AccountDto;
 import com.company.accountservice.model.AccountPageModel;
 import com.company.accountservice.service.AccountService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,11 +17,8 @@ public class AccountController {
     private final AccountService accountService;
 
     @GetMapping()
-    public ResponseEntity<AccountPageModel> getAll(@RequestParam Optional<Integer> page, @RequestParam Optional<Integer> pageSize, @RequestParam Optional<String> direction, @RequestParam Optional<String> sortBy) {
-        Sort.Direction order = Sort.Direction.ASC;
-        if (direction.isPresent() && direction.get().equals("desc")) order = Sort.Direction.DESC;
-
-        AccountPageModel pageModel = accountService.getAll(page.orElse(0), pageSize.orElse(10), order, sortBy.orElse("id"));
+    public ResponseEntity<AccountPageModel> getAll(@RequestParam Optional<Integer> page, @RequestParam Optional<Integer> pageSize) {
+        AccountPageModel pageModel = accountService.getAll(page.orElse(0), pageSize.orElse(10));
         return ResponseEntity.ok(pageModel);
     }
 

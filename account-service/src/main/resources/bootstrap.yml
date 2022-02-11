@@ -6,6 +6,3 @@ spring:
     config:
       profile: native
       uri: http://localhost:8888
-
-  profiles:
-    active: native

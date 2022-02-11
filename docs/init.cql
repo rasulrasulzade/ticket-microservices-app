@@ -2,10 +2,14 @@ CREATE KEYSPACE IF NOT EXISTS accountservice WITH replication = {'class':'Simple
 
 use accountservice;
 
-CREATE TABLE emp(
-    emp_id int PRIMARY KEY,
-    emp_name text,
-    emp_city text,
-    emp_sal varint,
-    emp_phone varint
+CREATE TABLE IF NOT EXISTS account
+(
+    id         varchar PRIMARY KEY,
+    uname      varchar,
+    name       varchar,
+    surname    varchar,
+    email      varchar,
+    birthDate  timestamp,
+    created_at timestamp,
+    is_active  boolean
 );

@@ -2,10 +2,9 @@ package com.company.accountservice.service;
 
 import com.company.accountservice.dto.AccountDto;
 import com.company.accountservice.model.AccountPageModel;
-import org.springframework.data.domain.Sort;
 
 public interface AccountService {
-     AccountPageModel getAll(Integer page, Integer pageSize, Sort.Direction direction, String sortBy);
+     AccountPageModel getAll(Integer page, Integer pageSize);
 
      AccountDto get(String id);
 

@@ -6,9 +6,8 @@ import com.company.accountservice.model.AccountPageModel;
 import com.company.accountservice.respository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.cassandra.core.query.CassandraPageRequest;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,9 +20,9 @@ public class AccountServiceImpl implements AccountService {
     private final ModelMapper mapper;
 
     @Override
-    public AccountPageModel getAll(Integer page, Integer pageSize, Sort.Direction direction, String sortBy) {
+    public AccountPageModel getAll(Integer page, Integer pageSize) {
         Slice<Account> pageData = accountRepository.findAll(
-                PageRequest.of(page, pageSize, direction, sortBy)
+                CassandraPageRequest.of(page, pageSize)
         );
 
         List<AccountDto> accounts = pageData.getContent().stream().map(account -> new AccountDto(account.getId(),
