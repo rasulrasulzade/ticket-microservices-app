@@ -2,9 +2,25 @@ version: "2"
 
 services:
   cassandra:
-    image: cassandra
+    image: cassandra:4.0.2
     ports:
       - "9042:9042"
     environment:
       - CASSANDRA_USER=root
       - CASSANDRA_PASSWORD=root
+
+  mysql:
+    image: mysql:8.0.28
+    restart: always
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+  elastisearch:
+    image: elasticsearch:6.8.5
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      discovery.type: single-node
